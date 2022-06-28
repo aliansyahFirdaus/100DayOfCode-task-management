@@ -8,6 +8,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
 
   const dataProcess = (data) => {
+    console.log(data)
     const loadedTasks = [];
 
     for (const taskKey in data) {
@@ -17,12 +18,7 @@ function App() {
     setTasks(loadedTasks);
   };
 
-  const { isLoading, error, fetchTasks } = useHttp(
-    {
-      url: "https://react-task-management-6ad68-default-rtdb.firebaseio.com/tasks.json",
-    },
-    dataProcess
-  );
+  const { isLoading, error, fetchTasks } = useHttp();
 
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);
@@ -55,9 +51,15 @@ function App() {
   // };
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    fetchTasks(
+      {
+        url: "https://react-task-management-6ad68-default-rtdb.firebaseio.com/tasks.json",
+      },
+      dataProcess
+    );
+  }, [fetchTasks]);
 
+  
   const taskAddHandler = (task) => {
     setTasks((prevTasks) => prevTasks.concat(task));
   };
